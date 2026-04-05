@@ -1,0 +1,12 @@
+# .dockerignore
+.git
+.vscode
+.agent
+bin
+tmp
+vendor
+*.log
+docker-compose.yaml
+README.md
+openspec
+docs
