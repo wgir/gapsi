@@ -1,8 +1,11 @@
 # Build stage
-FROM golang:1.26 AS builder
+FROM golang:1.24-alpine AS builder
 
 # Set working directory
 WORKDIR /app
+
+# Enable automatic Go toolchain downloads
+ENV GOTOOLCHAIN=auto
 
 # Copy go.mod and go.sum files
 COPY go.mod go.sum ./
@@ -28,9 +31,7 @@ WORKDIR /root/
 
 # Copy the binary from the build stage
 COPY --from=builder /app/todo-api .
-# Copy migrations if they are needed at runtime
-COPY --from=builder /app/migrations ./migrations
-# Copy .env file if needed (optional, docker-compose uses its own)
+# Copy .env file if needed (optional)
 # COPY --from=builder /app/.env .
 
 # Expose the port the app runs on
