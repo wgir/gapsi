@@ -52,7 +52,12 @@ docker-compose up --build
    ```bash
    go mod tidy
    ```
-2. Configura las variables de entorno (puedes crear un archivo `.env`):
+2. Arrancar el emulador de Firestore:
+   ```bash
+   firebase emulators:start --only firestore
+   ```
+
+3. Configura las variables de entorno (puedes crear un archivo `.env`):
    ```env
    APP_PORT=8090
    PROJECT_ID=todo-project
