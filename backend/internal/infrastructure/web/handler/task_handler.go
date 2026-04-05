@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -39,7 +40,15 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 
 func (h *TaskHandler) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	status := domain.TaskStatus(r.URL.Query().Get("status"))
-	tasks, err := h.service.GetAllTasks(r.Context(), status)
+	limitStr := r.URL.Query().Get("limit")
+	lastID := r.URL.Query().Get("last_id")
+
+	limit := 10
+	if limitStr != "" {
+		fmt.Sscanf(limitStr, "%d", &limit)
+	}
+
+	tasks, err := h.service.GetAllTasks(r.Context(), status, limit, lastID)
 	if err != nil {
 		h.logger.Error("failed to get all tasks", zap.Error(err))
 		http.Error(w, err.Error(), http.StatusInternalServerError)

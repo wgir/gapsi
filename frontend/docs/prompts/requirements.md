@@ -2,12 +2,8 @@
 Diseñar y desarrollar una app web con react y vite,siguiendo las mejores prácticas de
 desarrollo de software. El objetivo es evaluar habilidades técnicas para implementar una solución escalable,bien documentada y mantenible.
 
-## 2. Context
+La aplicacion es una todo-list permitiendo gestionar tareas. Creacion, listado, edicion, eliminacion y cambio de estado de las tareas.
 
-**Tenpo** is a fintech company that provides personnel services to tenpistas (clients).  
-To support this, Tenpo offers a platform that allows to manage their tenpistas allowing them to register their transactions.
-
-The application must allow the registration and management of **tenpistas** and **transactions**.
 ---
 
 ## 🛠️ Tech Stack
@@ -31,35 +27,21 @@ src/
 │   └── index.ts
 │
 ├── features/
-│   │   ├── tenpistas/
+│   │   ├── tasks/
 │   │   ├── api/
-│   │   │   └── tenpistas.api.ts
+│   │   │   └── tasks.api.ts
 │   │   ├── components/
-│   │   │   ├── TenpistaForm.tsx
-│   │   │   ├── TenpistaList.tsx
-│   │   │   └── TenpistaItem.tsx
+│   │   │   ├── TaskForm.tsx
+│   │   │   ├── TaskList.tsx
+│   │   │   └── TaskItem.tsx
 │   │   ├── hooks/
-│   │   │   └── useTenpistas.ts
+│   │   │   └── useTasks.ts
 │   │   ├── schemas/
-│   │   │   └── tenpista.schema.ts
+│   │   │   └── task.schema.ts
 │   │   ├── types/
 │   │   │   └── tenpista.types.ts
 │   │   └── index.ts
 │   │
-│   └── transactions/
-│       ├── api/
-│       │   └── transactions.api.ts
-│       ├── components/
-│       │   ├── TransactionForm.tsx
-│       │   ├── TransactionList.tsx
-│       │   └── TransactionItem.tsx
-│       ├── hooks/
-│       │   └── useTransactions.ts
-│       ├── schemas/
-│       │   └── transaction.schema.ts
-│       ├── types/
-│       │   └── transaction.types.ts
-│       └── index.ts
 │
 ├── components/
 │   └── ui/
@@ -86,15 +68,14 @@ src/
 Estructura general del Dashboard
 ┌──────────────────────────────────────────┐
 │ Header                                   │
-│  • Título: Dashboard Tenpista            │
+│  • Título: Todo List            │
 │  • Acciones globales                     │
 └──────────────────────────────────────────┘
 
 ┌───────────────┬──────────────────────────┐
 │ Sidebar       │ Main Content              │
 │               │                           │
-│ • Transacciones│ • Tabla de Transacciones │
-│ • Tenpistas     │ • Tabla de Tenpistas    │
+│ • Tasks       │ • Tabla de Tasks          │
 │               │                           │
 └───────────────┴───────────────────────────┘
 
@@ -104,17 +85,14 @@ Estructura general del Dashboard
 
 ### Flujo realista
 
-Usuario entra → ve transacciones
+Usuario entra → ve tareas (titulo, descripcion, estado) en scroll infinito con paginacion de 10 tareas por pagina ordenadas por fecha de creacion descendente -> ve boton de nueva tarea
 
-Hace clic en “Nueva Transacción”
+Hace clic en “Nueva Tarea”, se abre un modal con un formulario para crear una tarea
 
-Selecciona tenpista
+Digita el titulo de la tarea
+Digita la descripcion de la tarea
 
-Si no existen: crea tenpista (modal)
-
-vuelve automáticamente al form
-
-Guarda transacción
+Guarda la tarea
 
 Tabla se actualiza (React Query cache)
 
@@ -127,7 +105,7 @@ Loading (spinner o skeleton)
 
 Error (mensaje claro)
 
-Empty state (sin transacciones)
+Empty state (sin tareas)
 
 ---
 
@@ -149,37 +127,21 @@ Empty state (sin transacciones)
 
 ---
 
-### Tenpistas
+### Tasks
 
 The application must allow:
 
-- Create new tenpistas with the following fields:
-  - `tenpista_name` (varchar)
-  - `tenpista_rut` (varchar)
-- Retrieve all tenpistas
-- Retrieve an tenpista by ID
-- Update an tenpista
-- Delete an tenpista
-
----
-
-### Transactions
-
-The application must allow:
-
-- Create new transactions with the following fields:
-  - `transaction_amount` (int, in pesos)
-  - `merchant_or_business` (varchar)
-  - `tenpista_id` (int)
-  - `transaction_date` (datetime)
-- Retrieve all transactions
-- Retrieve a transaction by ID
-- Update a transaction
-- Delete a transaction
+- Create new tasks with the following fields:
+  - `title` (varchar)
+  - `description` (varchar)
+- Retrieve all tasks
+- Retrieve a task by ID
+- Update a task
+- Delete an task
 
 ---
 
 ### Constraints
 
-- Transaction amounts **cannot be negative**.
-- The transaction date **cannot be later than the current date and time**.
+- Task title **cannot be empty**.
+- Task description **cannot be empty**.

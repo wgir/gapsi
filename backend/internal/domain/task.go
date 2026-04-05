@@ -27,7 +27,7 @@ type Task struct {
 // TaskRepository defines the interface for interacting with task storage.
 type TaskRepository interface {
 	Create(ctx context.Context, task *Task) error
-	GetAll(ctx context.Context, status TaskStatus) ([]Task, error)
+	GetAll(ctx context.Context, status TaskStatus, limit int, lastID string) ([]Task, error)
 	GetByID(ctx context.Context, id string) (*Task, error)
 	Update(ctx context.Context, task *Task) error
 	Delete(ctx context.Context, id string) error

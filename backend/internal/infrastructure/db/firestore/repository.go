@@ -2,6 +2,7 @@ package firestore
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"cloud.google.com/go/firestore"
@@ -34,12 +35,24 @@ func (r *taskRepository) Create(ctx context.Context, task *domain.Task) error {
 	return err
 }
 
-func (r *taskRepository) GetAll(ctx context.Context, status domain.TaskStatus) ([]domain.Task, error) {
+func (r *taskRepository) GetAll(ctx context.Context, status domain.TaskStatus, limit int, lastID string) ([]domain.Task, error) {
 	var tasks []domain.Task
-	query := r.client.Collection(r.collection).Query
+	query := r.client.Collection(r.collection).OrderBy("created_at", firestore.Desc)
 
 	if status != "" {
 		query = query.Where("status", "==", string(status))
+	}
+
+	if lastID != "" {
+		lastDoc, err := r.client.Collection(r.collection).Doc(lastID).Get(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get last document: %w", err)
+		}
+		query = query.StartAfter(lastDoc)
+	}
+
+	if limit > 0 {
+		query = query.Limit(limit)
 	}
 
 	iter := query.Documents(ctx)

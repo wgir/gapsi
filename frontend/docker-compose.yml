@@ -1,0 +1,8 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "3001:80"
+    environment:
+      - VITE_API_URL=http://localhost:8080
+    restart: always

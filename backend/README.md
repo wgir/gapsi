@@ -69,7 +69,7 @@ docker-compose up --build
 | :--- | :--- | :--- |
 | `GET` | `/health` | Estado de la aplicación |
 | `POST` | `/tasks` | Crear una nueva tarea |
-| `GET` | `/tasks` | Listar todas las tareas (soporta query `?status=`) |
+| `GET` | `/tasks` | Listar todas las tareas (soporta query `?status=`, `?limit=10`, `?last_id=`) |
 | `GET` | `/tasks/{id}` | Obtener una tarea por ID |
 | `PUT` | `/tasks/{id}` | Actualizar una tarea existente |
 | `DELETE` | `/tasks/{id}` | Eliminar una tarea |

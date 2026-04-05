@@ -10,7 +10,7 @@ import (
 // TaskService handles business logic related to tasks.
 type TaskService interface {
 	CreateTask(ctx context.Context, task *domain.Task) error
-	GetAllTasks(ctx context.Context, status domain.TaskStatus) ([]domain.Task, error)
+	GetAllTasks(ctx context.Context, status domain.TaskStatus, limit int, lastID string) ([]domain.Task, error)
 	GetTaskByID(ctx context.Context, id string) (*domain.Task, error)
 	UpdateTask(ctx context.Context, id string, task *domain.Task) error
 	DeleteTask(ctx context.Context, id string) error
@@ -37,8 +37,11 @@ func (s *taskService) CreateTask(ctx context.Context, task *domain.Task) error {
 	return s.repo.Create(ctx, task)
 }
 
-func (s *taskService) GetAllTasks(ctx context.Context, status domain.TaskStatus) ([]domain.Task, error) {
-	return s.repo.GetAll(ctx, status)
+func (s *taskService) GetAllTasks(ctx context.Context, status domain.TaskStatus, limit int, lastID string) ([]domain.Task, error) {
+	if limit <= 0 {
+		limit = 10
+	}
+	return s.repo.GetAll(ctx, status, limit, lastID)
 }
 
 func (s *taskService) GetTaskByID(ctx context.Context, id string) (*domain.Task, error) {

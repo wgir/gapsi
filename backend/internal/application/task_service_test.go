@@ -18,12 +18,16 @@ func (m *MockRepository) Create(ctx context.Context, task *domain.Task) error {
 	return nil
 }
 
-func (m *MockRepository) GetAll(ctx context.Context, status domain.TaskStatus) ([]domain.Task, error) {
+func (m *MockRepository) GetAll(ctx context.Context, status domain.TaskStatus, limit int, lastID string) ([]domain.Task, error) {
 	var results []domain.Task
 	for _, t := range m.tasks {
 		if status == "" || t.Status == status {
 			results = append(results, t)
 		}
+	}
+	// Simple limit for mock
+	if limit > 0 && len(results) > limit {
+		results = results[:limit]
 	}
 	return results, nil
 }
