@@ -7,6 +7,11 @@ import (
 	"github.com/wgir/gapsi-todo/internal/domain"
 )
 
+var (
+	ErrTitleRequired       = errors.New("title is required")
+	ErrDescriptionRequired = errors.New("description is required")
+)
+
 // TaskService handles business logic related to tasks.
 type TaskService interface {
 	CreateTask(ctx context.Context, task *domain.Task) error
@@ -28,9 +33,6 @@ func NewTaskService(repo domain.TaskRepository) TaskService {
 }
 
 func (s *taskService) CreateTask(ctx context.Context, task *domain.Task) error {
-	if task.Title == "" {
-		return errors.New("title is required")
-	}
 	if task.Status == "" {
 		task.Status = domain.StatusTodo
 	}
