@@ -54,7 +54,7 @@ func TestTaskService_CreateTask(t *testing.T) {
 	repo := &MockRepository{tasks: make(map[string]domain.Task)}
 	service := NewTaskService(repo)
 
-	task := &domain.Task{Title: "Test Task"}
+	task := &domain.Task{Title: "Test Task", Description: "Test Description"}
 	err := service.CreateTask(context.Background(), task)
 
 	if err != nil {
@@ -70,10 +70,30 @@ func TestTaskService_CreateTask_NoTitle(t *testing.T) {
 	repo := &MockRepository{tasks: make(map[string]domain.Task)}
 	service := NewTaskService(repo)
 
-	task := &domain.Task{Title: ""}
+	task := &domain.Task{Title: "", Description: "Test Description"}
 	err := service.CreateTask(context.Background(), task)
 
-	if err == nil {
-		t.Error("Expected error for empty title, got nil")
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+
+	if task.Status != domain.StatusTodo {
+		t.Errorf("Expected status TODO, got %s", task.Status)
+	}
+}
+
+func TestTaskService_CreateTask_NoDescription(t *testing.T) {
+	repo := &MockRepository{tasks: make(map[string]domain.Task)}
+	service := NewTaskService(repo)
+
+	task := &domain.Task{Title: "Test Task", Description: ""}
+	err := service.CreateTask(context.Background(), task)
+
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+
+	if task.Status != domain.StatusTodo {
+		t.Errorf("Expected status TODO, got %s", task.Status)
 	}
 }
